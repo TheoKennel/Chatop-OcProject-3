@@ -4,10 +4,7 @@ import com.backend.chatopbackend.models.Users;
 import com.backend.chatopbackend.services.UsersServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -26,4 +23,12 @@ public class UsersController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<Users> registerUser(@RequestBody Users users) {
+        Users registerUser = usersServices.registerUser(users);
+        return ResponseEntity.ok(registerUser);
+    }
+
+//    @PostMapping("/login")
 }
