@@ -6,6 +6,8 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 import java.util.Optional;
 
 @Data
@@ -37,6 +39,12 @@ public class UsersServices {
 //        }
 //        return null;
 //    }
+
+    public Boolean loginUser(String email, String password) {
+       return usersRepository.findByEmail(email).map( users ->
+                 users.getPassword().equals(password))
+                .orElse(false);
+    }
 
     public Optional<Users> getUserById(Integer id) {
         return usersRepository.findById(id);
