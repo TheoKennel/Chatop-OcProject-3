@@ -12,8 +12,6 @@ public class Messages {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer rental_id;
-    private Integer user_id;
     private String message;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
@@ -27,4 +25,12 @@ public class Messages {
     private void onUpdate() {
         this.updated_at = LocalDateTime.now();
     }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
+
+    @ManyToOne
+    @JoinColumn(name = "rental_id")
+    private Rentals rentals;
 }

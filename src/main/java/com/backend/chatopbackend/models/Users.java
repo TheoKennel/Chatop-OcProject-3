@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -28,10 +29,10 @@ public class Users {
     private void onUpdate() {
         this.updated_at = LocalDateTime.now();
     }
-//
-//    @OneToMany(mappedBy = "user_id")
-//    private List<Messages> messages;
-//
-//    @OneToMany(mappedBy = "owner")
-//    private List<Rentals> rentals;
+
+    @OneToMany(mappedBy = "user")
+    private List<Messages> messages;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Rentals> rentals;
 }

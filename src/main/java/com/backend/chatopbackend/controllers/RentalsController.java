@@ -21,19 +21,11 @@ public class RentalsController {
     @Autowired
     private RentalsServices rentalsServices;
 
-    // Iterable fais pour retourné une collection (donc en général plus d'un)
     @GetMapping
     public Iterable<Rentals> getAllRental() {
         return rentalsServices.getAllRentals();
     }
 
-
-    // Cette méthode est un endpoint GET pour récupérer une location spécifique par son ID.
-// Elle prend en paramètre l'ID de la location (annoté avec @PathVariable) qui est utilisé
-// pour identifier la location demandée.
-// 'Optional<Rentals>' est retourné, ce qui signifie que la méthode peut retourner un objet
-// Rentals ou un objet vide si la location avec l'ID spécifié n'est pas trouvée.
-// Cela aide à gérer les cas où la location n'existe pas, sans retourner null.
     @GetMapping("/{id}")
     public Optional<Rentals> getRentalById(@PathVariable("id") final Integer id) {
         return rentalsServices.getRentals(id);

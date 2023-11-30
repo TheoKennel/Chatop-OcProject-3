@@ -14,20 +14,23 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
+//@Api(value = "MessageController", description = "Contrôleur pour gérer les messages")
 public class MessageController {
 
     @Autowired
     private MessagesServices messagesServices;
 
     @PostMapping("/messages/")
-    // <?> = Signifie que ça peut retourner n'importe quelle type d'object int : strign etc
-    // Map = interface / Hash map = Implémentation d'interface = Meilleur abstraction / Maintenabilité du code
+//    @ApiOperation(value = "Enregistrer un message", response = ResponseEntity.class)
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Message envoyé avec succès"),
+//            @ApiResponse(code = 500, message = "Erreur lors de l'enregistrement du message")
+//    })
     public ResponseEntity<?> saveMessage(@RequestBody Messages messages) {
         try {
              messagesServices.saveMessage(messages);
             return ResponseEntity.ok(Map.of("message","Message send with succes"));
         } catch (Exception e) {
-            // Cela indique qu'une erreur s'est produite du côté serveur.
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                 .body(Map.of( "message", " Error while saving message"));
         }
