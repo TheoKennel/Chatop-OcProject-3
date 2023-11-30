@@ -1,53 +1,43 @@
 package com.backend.chatopbackend.controllers;
 
 import com.backend.chatopbackend.models.Users;
+import com.backend.chatopbackend.services.JWTService;
 import com.backend.chatopbackend.services.UsersServices;
-import org.apache.catalina.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
-//@RequestMapping("/api")
-public class UsersController {
+@RequestMapping("/api/auth")
+public class UsersAuthController {
 
-    @Autowired
     private UsersServices usersServices;
+    private JWTService jwtService;
 
     public Iterable<Users> getAllUsers() {
        return usersServices.getAllUsers();
     }
 
-    @RequestMapping("/user")
-    @GetMapping("/{id}")
-    public ResponseEntity<Users> getUserId(@PathVariable("id") Integer id) {
-        return usersServices.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @RequestMapping("/auth")
     @PostMapping("/register")
     public ResponseEntity<Users> registerUser(@RequestBody Users users) {
         Users registerUser = usersServices.registerUser(users);
         return ResponseEntity.ok(registerUser);
     }
 
-    @RequestMapping("/auth")
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<?> loginUser(Authentication authentication, @RequestParam String email, @RequestParam String password) {
+        String token = jwtService.getToken(authentication);
         if (usersServices.loginUser(email, password)) {
-          return ResponseEntity.ok(Map.of("token", "jwt"));
+//          return ResponseEntity.ok(Map.of("token", "jwt"), token);
+            return ResponseEntity.ok(token);
         }
        return ResponseEntity.notFound().build();
     }
 
-    @RequestMapping("/auth")
     @GetMapping("/me")
-    public ResponseEntity<Users> getMineUser() {
-        return getUserId(1);
+    public Optional<Users> getMineUser() {
+        return usersServices.getUserById(1);
     }
 }

@@ -21,7 +21,6 @@ public class RentalsController {
     @Autowired
     private RentalsServices rentalsServices;
 
-
     // Iterable fais pour retourné une collection (donc en général plus d'un)
     @GetMapping
     public Iterable<Rentals> getAllRental() {
