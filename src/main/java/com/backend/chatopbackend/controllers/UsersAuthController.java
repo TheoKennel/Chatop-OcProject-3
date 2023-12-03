@@ -25,10 +25,10 @@ public class UsersAuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Users> registerUser(@RequestBody Users users) {
-        Users registerUser = usersServices.registerUser(users);
+    public ResponseEntity<?> registerUser(@RequestBody Users users) {
+        usersServices.registerUser(users);
         String token = jwtService.generateToken(users.getEmail());
-        return ResponseEntity.ok(registerUser);
+        return ResponseEntity.ok(Map.of("token", token));
     }
 
     @PostMapping("/login")

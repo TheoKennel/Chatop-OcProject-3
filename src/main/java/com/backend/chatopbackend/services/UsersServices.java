@@ -4,6 +4,8 @@ import com.backend.chatopbackend.models.Users;
 import com.backend.chatopbackend.repository.UsersRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,22 +18,20 @@ public class UsersServices {
     @Autowired
     private UsersRepository usersRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-    public Users registerUser(Users users) {
+
+    public ResponseEntity<?> registerUser(Users users) {
+        if(usersRepository.findByEmail(users.getEmail()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already in use");
+        }
         String encodedPassword = bCryptPasswordEncoder.encode(users.getPassword());
         users.setPassword(encodedPassword);
-        return usersRepository.save(users);
-    }
-
-
-    public Users authenticateUser(String email, String password) {
-        Optional<Users> user = usersRepository.findByEmail(email);
-        user.ifPresent(users -> bCryptPasswordEncoder.matches(password, users.getPassword()));
-        return user.get();
+        usersRepository.save(users);
+        return ResponseEntity.ok("User register");
     }
 
     public Boolean loginUser(String email, String password) {
-       return usersRepository.findByEmail(email).map( users ->
-                 users.getPassword().equals(password))
+       return usersRepository.findByEmail(email)
+               .map(users -> bCryptPasswordEncoder.matches(password, users.getPassword()))
                 .orElse(false);
     }
 
