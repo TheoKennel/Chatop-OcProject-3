@@ -3,6 +3,7 @@ package com.backend.chatopbackend.services;
 import com.backend.chatopbackend.models.Users;
 import com.backend.chatopbackend.repository.UsersRepository;
 import lombok.Data;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +20,11 @@ public class UsersServices {
     private UsersRepository usersRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-    public ResponseEntity<?> registerUser(Users users) {
-        if(usersRepository.findByEmail(users.getEmail()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already in use");
-        }
+    public Users registerUser(Users users) {
         String encodedPassword = bCryptPasswordEncoder.encode(users.getPassword());
         users.setPassword(encodedPassword);
         usersRepository.save(users);
-        return ResponseEntity.ok("User register");
+        return users;
     }
 
     public Boolean loginUser(String email, String password) {
