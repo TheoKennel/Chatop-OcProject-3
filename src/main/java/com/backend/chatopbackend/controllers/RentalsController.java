@@ -1,15 +1,13 @@
 package com.backend.chatopbackend.controllers;
 
+import com.backend.chatopbackend.dto.RentalsSave;
 import com.backend.chatopbackend.models.Rentals;
 import com.backend.chatopbackend.services.RentalsServices;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
@@ -32,15 +30,19 @@ public class RentalsController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, String>> saveRentals(@RequestParam MultipartFile imageFile, @RequestParam String rentalJson ) {
-        try {
-        Rentals rental = new ObjectMapper().readValue(rentalJson, Rentals.class);
-        rentalsServices.saveRental(rental, imageFile);
+    public ResponseEntity<Map<String, String>> saveRentals(@RequestParam MultipartFile picture, @ModelAttribute RentalsSave rentalJson ) {
+        //        Rentals rental = new ObjectMapper().readValue(rentalJson, Rentals.class);
+        String rentalName = rentalJson.getName();
+        BigDecimal rentalsSurface = rentalJson.getSurface();
+        BigDecimal price = rentalJson.getPrice();
+        String description = rentalJson.getDescription();
+        Rentals rental = new Rentals();
+        rental.setName(rentalName);
+        rental.setSurface(rentalsSurface);
+        rental.setPrice(price);
+        rental.setDescription(description);
+        rentalsServices.saveRental(rental, picture);
         return ResponseEntity.ok(Map.of("message", "Rental created !"));
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Error while saving rental in DB"));
-        }
     }
 
     @PutMapping("/{id}")

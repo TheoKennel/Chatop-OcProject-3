@@ -3,10 +3,11 @@ package com.backend.chatopbackend.services;
 import com.backend.chatopbackend.models.Users;
 import com.backend.chatopbackend.repository.UsersRepository;
 import lombok.Data;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,8 @@ public class UsersServices {
 
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private AuthenticationManager authenticationManager;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public Users registerUser(Users users) {
@@ -27,10 +30,19 @@ public class UsersServices {
         return users;
     }
 
-    public Boolean loginUser(String email, String password) {
-       return usersRepository.findByEmail(email)
-               .map(users -> bCryptPasswordEncoder.matches(password, users.getPassword()))
-                .orElse(false);
+    public Authentication loginUser(String email, String password) {
+        System.out.println(email);
+        System.out.println(password);
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, password)
+            );
+            System.out.println(authentication);
+            return authentication;
+        } catch (Exception e) {
+            System.out.println("Cant authenticate : " + e);
+            return null;
+        }
     }
 
     public Optional<Users> getUserById(Integer id) {
@@ -40,4 +52,14 @@ public class UsersServices {
     public Iterable<Users> getAllUsers() {
         return usersRepository.findAll();
     }
+
+    public Users getConnectedUser() {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            return usersRepository.findByEmail(auth.getName()).orElse(null);
+        } catch (Exception e) {
+            System.out.println("Error while retrieving user : " + e);
+        }
+        return null;
+     }
 }

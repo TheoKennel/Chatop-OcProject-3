@@ -2,6 +2,7 @@ package com.backend.chatopbackend.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
@@ -28,9 +29,12 @@ public class Messages {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private Users user;
 
     @ManyToOne
     @JoinColumn(name = "rental_id")
+    @ToString.Exclude
     private Rentals rentals;
+
 }

@@ -1,11 +1,15 @@
 package com.backend.chatopbackend.services;
 
 import com.backend.chatopbackend.models.Rentals;
+import com.backend.chatopbackend.models.Users;
 import com.backend.chatopbackend.repository.RentalsRepository;
+import com.backend.chatopbackend.repository.UsersRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +25,9 @@ public class RentalsServices {
     private RentalsRepository rentalsRepository;
 
     @Autowired
+    private UsersRepository usersRepository;
+
+    @Autowired
     private Cloudinary cloudinary;
 
     public Iterable<Rentals> getAllRentals() {
@@ -32,8 +39,12 @@ public class RentalsServices {
     }
 
     public Rentals saveRental(Rentals rentals, MultipartFile imageFile) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Users owner = usersRepository.findByEmail(auth.getName()).orElse(null);
+        System.out.println(owner);
         String imageUrl = uploadImage(imageFile);
         rentals.setPicture(imageUrl);
+        rentals.setOwner(owner);
         return rentalsRepository.save(rentals);
     }
 

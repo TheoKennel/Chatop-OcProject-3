@@ -1,5 +1,6 @@
 package com.backend.chatopbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,6 +34,7 @@ public class Users {
     @OneToMany(mappedBy = "user")
     private List<Messages> messages;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "owner")
     private List<Rentals> rentals;
 }

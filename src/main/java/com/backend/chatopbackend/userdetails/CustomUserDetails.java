@@ -16,7 +16,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Retourne une liste vide si aucun rôle n'est défini
         return Collections.emptyList();
     }
 
@@ -32,26 +31,21 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        // Retourne true si vous ne gérez pas l'expiration du compte
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        // Retourne true si vous ne gérez pas le verrouillage du compte
         return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        // Retourne true si vous ne gérez pas l'expiration des identifiants
         return true;
     }
 
     @Override
     public boolean isEnabled() {
-        // Retourne true si votre logique métier requiert une vérification de l'état "activé" du compte
-        // Sinon, vous pouvez adapter cette méthode en fonction de l'état du compte dans votre entité Users
         return true;
     }
 }

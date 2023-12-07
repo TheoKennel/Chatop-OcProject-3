@@ -1,6 +1,7 @@
 package com.backend.chatopbackend.controllers;
 
 import com.backend.chatopbackend.configuration.jwt.JwtTokenProvider;
+import com.backend.chatopbackend.dto.LoginRequest;
 import com.backend.chatopbackend.models.Users;
 import com.backend.chatopbackend.services.UsersServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -26,46 +26,35 @@ public class UsersAuthController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-
-    public Iterable<Users> getAllUsers() {
-       return usersServices.getAllUsers();
-    }
-
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody Users users) {
-       Users user =  usersServices.registerUser(users);
-       Authentication authentication = authenticationManager.authenticate(
+        String userPassword = users.getPassword();
+        Users user =  usersServices.registerUser(users);
+        Authentication authentication = authenticationManager.authenticate(
                new UsernamePasswordAuthenticationToken(
                        user.getEmail(),
-                       user.getPassword()
+                       userPassword
                )
        );
         String token = jwtTokenProvider.createToken(authentication);
-//        String token = jwtService.generateToken(users.getEmail());
         return ResponseEntity.ok(Map.of("token", token));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestParam String email, @RequestParam String password) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, password)
-        );
-            if (authentication.isAuthenticated()) {
-            String token = jwtTokenProvider.createToken(authentication);
-          return ResponseEntity.ok(Map.of("token", token));
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
+        String userEmail = loginRequest.getEmail();
+        String userPassword = loginRequest.getPassword();
+        Authentication authenticate = usersServices.loginUser(userEmail, userPassword);
+        if (authenticate != null) {
+            String token = jwtTokenProvider.createToken(authenticate);
+            return ResponseEntity.ok(Map.of("token", token));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
         }
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<?> authenticateUser(@RequestParam AuthenticationRequest authenticationRequest) {
-//        Authentication authentication = authenticationManager.authenticate(
-////                authenticationRequest.get, password
-//        )
-//    }
     @GetMapping("/me")
-    public Optional<Users> getMineUser() {
-        return usersServices.getUserById(1);
+    public Users getLoggedUser() {
+      return usersServices.getConnectedUser();
     }
 }
