@@ -63,6 +63,7 @@ public class Rentals {
     private BigDecimal surface;
     private BigDecimal price;
     private String picture;
+    @Column(length = 5000000)
     private String description;
     @CreationTimestamp
     private Date createdAt;
