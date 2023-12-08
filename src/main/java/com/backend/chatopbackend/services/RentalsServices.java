@@ -35,7 +35,8 @@ public class RentalsServices {
     }
 
     public Optional<Rentals> getRentals(final Integer id) {
-        return rentalsRepository.findById(id);
+        var a = rentalsRepository.findById(id);
+        return a;
     }
 
     public Rentals saveRental(Rentals rentals, MultipartFile imageFile) {

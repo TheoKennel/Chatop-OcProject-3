@@ -29,12 +29,19 @@ public class Messages {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @ToString.Exclude
     private Users user;
 
     @ManyToOne
     @JoinColumn(name = "rental_id")
-    @ToString.Exclude
     private Rentals rentals;
 
+    @Override
+    public String toString() {
+        return "Messages{" +
+                "id=" + id +
+                ", message='" + message + '\'' +
+                ", created_at=" + created_at +
+                ", updated_at=" + updated_at +
+                '}';
+    }
 }

@@ -31,7 +31,6 @@ public class RentalsController {
 
     @PostMapping
     public ResponseEntity<Map<String, String>> saveRentals(@RequestParam MultipartFile picture, @ModelAttribute RentalsSave rentalJson ) {
-        //        Rentals rental = new ObjectMapper().readValue(rentalJson, Rentals.class);
         String rentalName = rentalJson.getName();
         BigDecimal rentalsSurface = rentalJson.getSurface();
         BigDecimal price = rentalJson.getPrice();
