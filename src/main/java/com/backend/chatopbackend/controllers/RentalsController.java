@@ -44,12 +44,22 @@ public class RentalsController {
         return ResponseEntity.ok(Map.of("message", "Rental created !"));
     }
 
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Map<String, String>> updateRentals(@PathVariable("id") final Integer id, @RequestParam String name,
+//                                                @RequestParam BigDecimal surface, @RequestParam BigDecimal price, @RequestParam String description) {
+//        return rentalsServices.getRentals(id)
+//                .map(rentals -> {
+//                    rentalsServices.updateRental(rentals, name, surface, price, description);
+//                    return ResponseEntity.ok(Map.of("message", "Rental updated !"));
+//                })
+//                .orElseGet(() -> ResponseEntity.notFound().build());
+//    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, String>> updateRentals(@PathVariable("id") final Integer id, @RequestParam String name,
-                                                @RequestParam BigDecimal surface, @RequestParam BigDecimal price, @RequestParam String description) {
+    public ResponseEntity<Map<String, String>> updateRentals(@PathVariable("id") final Integer id,  @ModelAttribute RentalsSave rentalsSave) {
         return rentalsServices.getRentals(id)
                 .map(rentals -> {
-                    rentalsServices.updateRental(rentals, name, surface, price, description);
+                    rentalsServices.updateRental(rentals, rentalsSave);
                     return ResponseEntity.ok(Map.of("message", "Rental updated !"));
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());

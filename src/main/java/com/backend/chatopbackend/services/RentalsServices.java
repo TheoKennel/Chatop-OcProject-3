@@ -1,5 +1,6 @@
 package com.backend.chatopbackend.services;
 
+import com.backend.chatopbackend.dto.RentalsSave;
 import com.backend.chatopbackend.models.Rentals;
 import com.backend.chatopbackend.models.Users;
 import com.backend.chatopbackend.repository.RentalsRepository;
@@ -49,12 +50,16 @@ public class RentalsServices {
         return rentalsRepository.save(rentals);
     }
 
-    public void updateRental(Rentals rentalToUpdate, String name, BigDecimal surface, BigDecimal price,
-                                String description) {
+    public void updateRental(Rentals rentalToUpdate, RentalsSave rentalsSave) {
+       String name =  rentalsSave.getName();
+       BigDecimal surface = rentalsSave.getSurface();
+       BigDecimal price = rentalsSave.getPrice();
+       String description = rentalsSave.getDescription();
         rentalToUpdate.setName(name);
         rentalToUpdate.setSurface(surface);
         rentalToUpdate.setPrice(price);
         rentalToUpdate.setDescription(description);
+        rentalsRepository.save(rentalToUpdate);
     }
 
     public String uploadImage(MultipartFile file) {

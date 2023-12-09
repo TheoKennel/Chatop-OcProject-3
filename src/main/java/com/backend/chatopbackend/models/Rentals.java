@@ -1,15 +1,12 @@
 package com.backend.chatopbackend.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 //@Entity
 //@Data
@@ -63,7 +60,7 @@ public class Rentals {
     private BigDecimal surface;
     private BigDecimal price;
     private String picture;
-    @Column(length = 5000000)
+    @Column(length = 5000)
     private String description;
     @CreationTimestamp
     private Date createdAt;
