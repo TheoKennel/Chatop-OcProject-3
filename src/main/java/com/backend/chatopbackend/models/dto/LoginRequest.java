@@ -1,4 +1,4 @@
-package com.backend.chatopbackend.dto;
+package com.backend.chatopbackend.models.dto;
 
 import lombok.Getter;
 

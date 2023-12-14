@@ -1,8 +1,8 @@
 package com.backend.chatopbackend.services;
 
-import com.backend.chatopbackend.dto.RentalsSave;
-import com.backend.chatopbackend.models.Rentals;
-import com.backend.chatopbackend.models.Users;
+import com.backend.chatopbackend.models.dto.RentalsSave;
+import com.backend.chatopbackend.models.entity.Rentals;
+import com.backend.chatopbackend.models.entity.Users;
 import com.backend.chatopbackend.repository.RentalsRepository;
 import com.backend.chatopbackend.repository.UsersRepository;
 import com.cloudinary.Cloudinary;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Optional;
 
 @Data
@@ -40,25 +39,25 @@ public class RentalsServices {
         return a;
     }
 
-    public Rentals saveRental(Rentals rentals, MultipartFile imageFile) {
+    public Rentals saveRental(RentalsSave rentalJson, MultipartFile imageFile) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Users owner = usersRepository.findByEmail(auth.getName()).orElse(null);
-        System.out.println(owner);
         String imageUrl = uploadImage(imageFile);
-        rentals.setPicture(imageUrl);
-        rentals.setOwner(owner);
-        return rentalsRepository.save(rentals);
+        Rentals rental = new Rentals();
+        rental.setName(rentalJson.getName());
+        rental.setSurface(rentalJson.getSurface());
+        rental.setPrice(rentalJson.getPrice());
+        rental.setDescription(rentalJson.getDescription());
+        rental.setPicture(imageUrl);
+        rental.setOwner(owner);
+        return rentalsRepository.save(rental);
     }
 
     public void updateRental(Rentals rentalToUpdate, RentalsSave rentalsSave) {
-       String name =  rentalsSave.getName();
-       BigDecimal surface = rentalsSave.getSurface();
-       BigDecimal price = rentalsSave.getPrice();
-       String description = rentalsSave.getDescription();
-        rentalToUpdate.setName(name);
-        rentalToUpdate.setSurface(surface);
-        rentalToUpdate.setPrice(price);
-        rentalToUpdate.setDescription(description);
+        rentalToUpdate.setName(rentalsSave.getName());
+        rentalToUpdate.setSurface(rentalsSave.getSurface());
+        rentalToUpdate.setPrice(rentalsSave.getPrice());
+        rentalToUpdate.setDescription(rentalsSave.getDescription());
         rentalsRepository.save(rentalToUpdate);
     }
 

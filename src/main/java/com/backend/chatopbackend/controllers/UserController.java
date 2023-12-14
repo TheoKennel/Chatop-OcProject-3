@@ -1,6 +1,6 @@
 package com.backend.chatopbackend.controllers;
 
-import com.backend.chatopbackend.models.Users;
+import com.backend.chatopbackend.models.entity.Users;
 import com.backend.chatopbackend.services.UsersServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

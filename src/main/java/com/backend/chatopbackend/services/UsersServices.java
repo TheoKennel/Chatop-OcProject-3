@@ -1,6 +1,6 @@
 package com.backend.chatopbackend.services;
 
-import com.backend.chatopbackend.models.Users;
+import com.backend.chatopbackend.models.entity.Users;
 import com.backend.chatopbackend.repository.UsersRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,6 @@ public class UsersServices {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password)
             );
-            System.out.println(authentication);
             return authentication;
         } catch (Exception e) {
             System.out.println("Cant authenticate : " + e);
@@ -47,10 +46,6 @@ public class UsersServices {
 
     public Optional<Users> getUserById(Integer id) {
         return usersRepository.findById(id);
-    }
-
-    public Iterable<Users> getAllUsers() {
-        return usersRepository.findAll();
     }
 
     public Users getConnectedUser() {

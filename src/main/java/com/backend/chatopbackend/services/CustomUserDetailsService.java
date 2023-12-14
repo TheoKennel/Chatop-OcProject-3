@@ -1,6 +1,6 @@
 package com.backend.chatopbackend.services;
 
-import com.backend.chatopbackend.models.Users;
+import com.backend.chatopbackend.models.entity.Users;
 import com.backend.chatopbackend.repository.UsersDetailsRepository;
 import com.backend.chatopbackend.userdetails.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;

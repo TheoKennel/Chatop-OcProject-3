@@ -1,6 +1,6 @@
 package com.backend.chatopbackend.repository;
 
-import com.backend.chatopbackend.models.Users;
+import com.backend.chatopbackend.models.entity.Users;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

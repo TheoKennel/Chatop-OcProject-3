@@ -1,8 +1,8 @@
 package com.backend.chatopbackend.controllers;
 
 import com.backend.chatopbackend.configuration.jwt.JwtTokenProvider;
-import com.backend.chatopbackend.dto.LoginRequest;
-import com.backend.chatopbackend.models.Users;
+import com.backend.chatopbackend.models.dto.LoginRequest;
+import com.backend.chatopbackend.models.entity.Users;
 import com.backend.chatopbackend.services.UsersServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +29,7 @@ public class UsersAuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody Users users) {
         String userPassword = users.getPassword();
+        System.out.println(userPassword);
         Users user =  usersServices.registerUser(users);
         Authentication authentication = authenticationManager.authenticate(
                new UsernamePasswordAuthenticationToken(
