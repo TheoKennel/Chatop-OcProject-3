@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ChatopbackendApplication implements CommandLineRunner {
+public class   ChatopbackendApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(ChatopbackendApplication.class, args);
