@@ -33,6 +33,35 @@ Pour installer et exécuter le projet localement, suivez ces étapes :
     ```
 3. **Démarrer le serveur**
 
+## Installation de la Base de Données MySQL
+Pour configurer et utiliser une base de données MySQL pour ce projet, suivez ces étapes :
+
+### 1. **Connexion à MySQL** :
+
+   Ouvrez votre terminal et connectez-vous à votre instance MySQL :
+
+```bash
+mysql -u root -p
+```
+
+Remplacez root par votre nom d'utilisateur MySQL si nécessaire. Saisissez votre mot de passe lorsque vous y êtes invité.
+
+2. ### **Création de la BDD** :
+
+```bash
+CREATE DATABASE NomDeVotreBaseDeDonnees;
+```
+
+3. ### **Configuration de l'application** :
+
+Ajoutez les configurations nécessaires dans votre fichier .env pour la connexion à la base de données. Par exemple :
+
+```agsl
+DATABASE_URL=jdbc:mysql://localhost/NomDeVotreBaseDeDonnees
+DATABASE_USERNAME=NomUtilisateur
+DATABASE_PASSWORD=MotDePasse
+```
+
 ## Configurer les Variables d'Environnement
 
 Créez un fichier .env à la racine du projet et ajoutez les configurations nécessaires pour la base de données et Cloudinary.
